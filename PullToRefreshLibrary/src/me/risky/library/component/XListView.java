@@ -10,12 +10,16 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
+
+import com.haarman.listviewanimations.swinginadapters.AnimationAdapter;
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 /**
  * XListView
@@ -120,6 +124,7 @@ public class XListView extends ListView implements OnScrollListener {
         mHeaderViewHeight = (int) context.getResources().getDimension(R.dimen.header_height);
     }
 
+   
     @Override
     public void setAdapter(ListAdapter adapter) {
         // make sure XFooterView is the last footer view, and only add once.
@@ -129,6 +134,15 @@ public class XListView extends ListView implements OnScrollListener {
         }
         super.setAdapter(adapter);
     }
+    /**
+    * 设置list动画，关联listviewAnimations
+    */
+    public void setBottomAnimAdapter(BaseAdapter adapter){
+    	AnimationAdapter animAdapter = new SwingBottomInAnimationAdapter(adapter);
+        animAdapter.setAbsListView(this);
+        setAdapter(animAdapter);
+    }
+    
 
     /**
      * enable or disable pull down refresh feature.
@@ -275,12 +289,10 @@ public class XListView extends ListView implements OnScrollListener {
     }
     
     public void startRefresh(){
-    	if (mEnablePullRefresh && mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
-            mPullRefreshing = true;
-            mHeaderView.setState(XHeaderView.STATE_REFRESHING);
-            if (mListViewListener != null) {
-                mListViewListener.onRefresh();
-            }
+        mPullRefreshing = true;
+        mHeaderView.setState(XHeaderView.STATE_REFRESHING);
+        if (mListViewListener != null) {
+            mListViewListener.onRefresh();
         }
     	showHeaderHeight();
     }

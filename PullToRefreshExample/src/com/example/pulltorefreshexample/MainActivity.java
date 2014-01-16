@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 		
 		
 		mListView = (XListView) findViewById(R.id.listview);
-		mListView.setAdapter(adapter);
+		mListView.setBottomAnimAdapter(adapter);
 		mListView.setPullRefreshEnable(true);
 		mListView.setPullLoadEnable(true);
 //		mListView.setRefreshTime(getTime());
